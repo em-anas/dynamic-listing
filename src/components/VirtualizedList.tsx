@@ -10,15 +10,61 @@ import React, {
 } from "react";
 import { FixedSizeList as List } from "react-window";
 import { Alert } from "antd";
+import styled from "styled-components";
 import { useDebounce } from "../hooks";
 import type { VirtualizedListProps } from "../types";
-import { LoadingSpinner } from "./common";
+import { LoadingSpinner, Title } from "./common";
 
 export interface VirtualizedListRef {
   scrollTo: (index: number) => void;
   scrollToTop: () => void;
   getVisibleRange: () => { start: number; end: number };
 }
+
+interface StyledContainerProps {
+  $height: number;
+}
+
+const StyledContainer = styled.div<StyledContainerProps>`
+  height: ${({ $height }) => $height}px;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  background: var(--color-background-primary);
+  box-sizing: border-box;
+`;
+
+const StyledList = styled(List)`
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const StyledEmptyContainer = styled.div`
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-secondary);
+`;
+
+const StyledErrorContainer = styled.div`
+  padding: var(--spacing-lg);
+`;
+
+const StyledLoadingItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+const StyledErrorItem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-error);
+`;
 
 const ErrorBoundary: React.FC<{
   children: React.ReactNode;
@@ -136,19 +182,9 @@ const VirtualizedList = forwardRef<
     ({ index, style }: { index: number; style: React.CSSProperties }) => {
       if (!isItemLoaded(index)) {
         return (
-          <div
-            style={{
-              ...style,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              boxSizing: "border-box",
-            }}
-            className="list-item-loading"
-          >
-            {loadingComponent || <LoadingSpinner />}
-          </div>
+          <StyledLoadingItem style={style}>
+            (loadingComponent || <LoadingSpinner />)
+          </StyledLoadingItem>
         );
       }
 
@@ -165,17 +201,7 @@ const VirtualizedList = forwardRef<
       } catch (err) {
         console.error("Error rendering item:", err);
         return (
-          <div
-            style={{
-              ...style,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#ff4d4f",
-            }}
-          >
-            Error loading item
-          </div>
+          <StyledErrorItem style={style}>Error loading item</StyledErrorItem>
         );
       }
     },
@@ -234,19 +260,15 @@ const VirtualizedList = forwardRef<
 
   if (items.length === 0 && !hasNextPage) {
     return (
-      <div className={`virtualized-list-empty ${className}`}>
-        {emptyComponent || (
-          <div style={{ textAlign: "center", padding: "40px" }}>
-            No items to display
-          </div>
-        )}
-      </div>
+      <StyledEmptyContainer className={className}>
+        {emptyComponent || <Title variant="h3">No items to display</Title>}
+      </StyledEmptyContainer>
     );
   }
 
   if (error) {
     return (
-      <div className={`virtualized-list-error ${className}`}>
+      <StyledErrorContainer className={className}>
         {errorComponent || (
           <Alert
             message="Loading Error"
@@ -256,29 +278,20 @@ const VirtualizedList = forwardRef<
             action={<button onClick={() => setError(null)}>Retry</button>}
           />
         )}
-      </div>
+      </StyledErrorContainer>
     );
   }
 
   return (
     <ErrorBoundary fallback={errorComponent}>
-      <div
+      <StyledContainer
         ref={containerRef}
-        className={`virtualized-list-container ${className}`}
-        style={{
-          height: dimensions.height,
-          width: "100%",
-          maxWidth: "100%",
-          border: "1px solid #d9d9d9",
-          borderRadius: "12px",
-          overflow: "hidden",
-          background: "white",
-          boxSizing: "border-box",
-        }}
+        className={className}
+        $height={dimensions.height}
         role="list"
         aria-label="Virtualized list"
       >
-        <List
+        <StyledList
           ref={listRef}
           height={dimensions.height}
           width={dimensions.width}
@@ -288,11 +301,10 @@ const VirtualizedList = forwardRef<
           onScroll={handleScroll}
           overscanCount={overscan}
           itemKey={getItemKey}
-          style={{ width: "100%", boxSizing: "border-box" }}
         >
           {itemRenderer}
-        </List>
-      </div>
+        </StyledList>
+      </StyledContainer>
     </ErrorBoundary>
   );
 });
