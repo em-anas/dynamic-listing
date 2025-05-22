@@ -1,15 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useMemo } from "react";
-import {
-  Modal,
-  Form,
-  Select,
-  InputNumber,
-  Slider,
-  message,
-  Row,
-  Col,
-} from "antd";
+import { Modal, Form, InputNumber, Slider, message, Row, Col } from "antd";
 import type { MobileFormProps } from "../../../types";
 import { getRandomItem } from "../../../utils";
 import {
@@ -17,8 +8,7 @@ import {
   mobileMockData,
   deviceNames,
 } from "../../../utils/mockData";
-
-const { Option } = Select;
+import { FormSelect } from "../../../components";
 
 export const MobileForm: React.FC<MobileFormProps> = ({
   visible,
@@ -46,15 +36,6 @@ export const MobileForm: React.FC<MobileFormProps> = ({
 
     return deviceNames.map((suffix) => `${selectedBrand.name} ${suffix}`);
   }, [selectedBrandId, brands]);
-
-  // Clear device name when brand changes
-  const handleBrandChange = (newBrandId: string) => {
-    const currentBrandId = form.getFieldValue("brandId");
-    if (currentBrandId !== newBrandId) {
-      // Clear the device name when brand changes
-      form.setFieldValue("name", "");
-    }
-  };
 
   const handleSubmit = async () => {
     try {
@@ -155,65 +136,51 @@ export const MobileForm: React.FC<MobileFormProps> = ({
       >
         <Row gutter={16}>
           <Col xs={24} sm={12}>
-            <Form.Item
+            <FormSelect
               name="brandId"
               label="Brand"
+              options={brands.map((brand) => ({
+                label: brand.name,
+                value: brand.id,
+              }))}
               rules={[{ required: true, message: "Please select a brand" }]}
-            >
-              <Select placeholder="Select brand" onChange={handleBrandChange}>
-                {brands.map((brand) => (
-                  <Option key={brand.id} value={brand.id}>
-                    {brand.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+            />
           </Col>
 
           <Col xs={24} sm={12}>
-            <Form.Item
+            <FormSelect
               name="name"
               label="Device Name"
+              options={brandSpecificDeviceNames.map((name) => ({
+                label: name,
+                value: name,
+              }))}
               rules={[{ required: true, message: "Please enter device name" }]}
-            >
-              <Select
-                placeholder="Select or enter device name"
-                showSearch
-                allowClear
-                disabled={!selectedBrandId}
-                notFoundContent={
-                  !selectedBrandId
-                    ? "Please select a brand first"
-                    : "No device names found"
-                }
-              >
-                {brandSpecificDeviceNames.map((name) => (
-                  <Option key={name} value={name}>
-                    {name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+              showSearch
+              allowClear
+              disabled={!selectedBrandId}
+              notFoundContent={
+                !selectedBrandId
+                  ? "Please select a brand first"
+                  : "No device names found"
+              }
+            />
           </Col>
         </Row>
 
         <Row gutter={16}>
           <Col xs={24} sm={12}>
-            <Form.Item
+            <FormSelect
               name="releaseDate"
               label="Release Date"
+              options={releaseDateOptions.map((date) => ({
+                label: date,
+                value: date,
+              }))}
               rules={[
                 { required: true, message: "Please select release date" },
               ]}
-            >
-              <Select placeholder="Select release date">
-                {releaseDateOptions.map((date) => (
-                  <Option key={date} value={date}>
-                    {date}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+            />
           </Col>
 
           <Col xs={24} sm={12}>
@@ -251,111 +218,87 @@ export const MobileForm: React.FC<MobileFormProps> = ({
           <h3 style={{ marginBottom: 16 }}>Specifications</h3>
           <Row gutter={16}>
             <Col xs={24} sm={12}>
-              <Form.Item
+              <FormSelect
                 name="display"
                 label="Display"
+                options={displayOptions.map((option) => ({
+                  label: option,
+                  value: option,
+                }))}
                 rules={[
                   { required: true, message: "Please select display specs" },
                 ]}
-              >
-                <Select placeholder="Select display specs">
-                  {displayOptions.map((option) => (
-                    <Option key={option} value={option}>
-                      {option}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
+              />
             </Col>
 
             <Col xs={24} sm={12}>
-              <Form.Item
+              <FormSelect
                 name="processor"
                 label="Processor"
+                options={processorOptions.map((option) => ({
+                  label: option,
+                  value: option,
+                }))}
                 rules={[{ required: true, message: "Please select processor" }]}
-              >
-                <Select placeholder="Select processor">
-                  {processorOptions.map((option) => (
-                    <Option key={option} value={option}>
-                      {option}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
+              />
             </Col>
           </Row>
 
           <Row gutter={16}>
             <Col xs={24} sm={12}>
-              <Form.Item
+              <FormSelect
                 name="ram"
                 label="RAM"
+                options={ramOptions.map((option) => ({
+                  label: option,
+                  value: option,
+                }))}
                 rules={[{ required: true, message: "Please select RAM specs" }]}
-              >
-                <Select placeholder="Select RAM specs">
-                  {ramOptions.map((option) => (
-                    <Option key={option} value={option}>
-                      {option}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
+              />
             </Col>
 
             <Col xs={24} sm={12}>
-              <Form.Item
+              <FormSelect
                 name="storage"
                 label="Storage"
+                options={storageOptions.map((option) => ({
+                  label: option,
+                  value: option,
+                }))}
                 rules={[
                   { required: true, message: "Please select storage specs" },
                 ]}
-              >
-                <Select placeholder="Select storage specs">
-                  {storageOptions.map((option) => (
-                    <Option key={option} value={option}>
-                      {option}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
+              />
             </Col>
           </Row>
 
           <Row gutter={16}>
             <Col xs={24} sm={12}>
-              <Form.Item
+              <FormSelect
                 name="camera"
                 label="Camera"
+                options={cameraOptions.map((option) => ({
+                  label: option,
+                  value: option,
+                }))}
                 rules={[
                   { required: true, message: "Please select camera specs" },
                 ]}
-              >
-                <Select placeholder="Select camera specs">
-                  {cameraOptions.map((option) => (
-                    <Option key={option} value={option}>
-                      {option}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
+              />
             </Col>
 
             <Col xs={24} sm={12}>
-              <Form.Item
+              <FormSelect
                 name="battery"
                 label="Battery"
+                options={batteryOptions.map((option) => ({
+                  label: option,
+                  value: option,
+                }))}
                 rules={[
                   { required: true, message: "Please select battery specs" },
                 ]}
-              >
-                <Select placeholder="Select battery specs">
-                  {batteryOptions.map((option) => (
-                    <Option key={option} value={option}>
-                      {option}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
+              />
             </Col>
           </Row>
         </div>
@@ -458,21 +401,17 @@ export const MobileForm: React.FC<MobileFormProps> = ({
             </Col>
           </Row>
 
-          <Form.Item
+          <FormSelect
             name="reviewSummary"
             label="Review Summary"
+            options={reviewSummaryOptions.map((option) => ({
+              label: option,
+              value: option,
+            }))}
             rules={[
               { required: true, message: "Please select review summary" },
             ]}
-          >
-            <Select placeholder="Select review summary">
-              {reviewSummaryOptions.map((option) => (
-                <Option key={option} value={option}>
-                  {option}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+          />
         </div>
       </Form>
     </Modal>

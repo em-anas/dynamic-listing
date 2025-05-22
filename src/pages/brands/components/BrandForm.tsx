@@ -1,12 +1,10 @@
 import React, { useMemo } from "react";
-import { Modal, Form, InputNumber, Select, Row, Col, message } from "antd";
+import { Modal, Form, InputNumber, Row, Col, message } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import type { BrandFormProps } from "../../../types";
 import { useBrands } from "../../../hooks";
 import { brandLogos } from "../../../utils";
-import { Button } from "../../../components";
-
-const { Option } = Select;
+import { Button, FormSelect } from "../../../components";
 
 export const BrandForm: React.FC<BrandFormProps> = ({
   visible,
@@ -140,42 +138,29 @@ export const BrandForm: React.FC<BrandFormProps> = ({
           variants: brand?.variants || [variantOptions[0]],
         }}
       >
-        <Form.Item
+        <FormSelect
           name="name"
           label="Brand Name"
+          options={availableBrandNames.map(name => ({ label: name, value: name }))}
           rules={[{ required: true, message: "Please select brand name" }]}
-        >
-          <Select
-            placeholder="Select brand"
-            showSearch
-            disabled={availableBrandNames.length === 0 && !isEdit}
-            notFoundContent={
-              availableBrandNames.length === 0
-                ? "All brands already exist"
-                : "No brands found"
-            }
-          >
-            {availableBrandNames.map((key) => (
-              <Option key={key} value={key}>
-                {key}
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+          showSearch
+          disabled={availableBrandNames.length === 0 && !isEdit}
+          notFoundContent={
+            availableBrandNames.length === 0
+              ? "All brands already exist"
+              : "No brands found"
+          }
+        />
 
-        <Form.Item
+        <FormSelect
           name="description"
           label="Description"
+          options={descriptionOptions.map(desc => ({ 
+            label: `${desc.substring(0, 80)}...`,
+            value: desc 
+          }))}
           rules={[{ required: true, message: "Please select a description" }]}
-        >
-          <Select placeholder="Select brand description">
-            {descriptionOptions.map((desc, index) => (
-              <Option key={index} value={desc}>
-                {desc.substring(0, 80)}...
-              </Option>
-            ))}
-          </Select>
-        </Form.Item>
+        />
 
         <Row gutter={16}>
           <Col xs={24} sm={12}>
@@ -205,24 +190,12 @@ export const BrandForm: React.FC<BrandFormProps> = ({
           </Col>
 
           <Col xs={24} sm={12}>
-            <Form.Item
+            <FormSelect
               name="headquarters"
               label="Headquarters"
-              rules={[
-                {
-                  required: true,
-                  message: "Please select headquarters location",
-                },
-              ]}
-            >
-              <Select placeholder="Select headquarters location">
-                {headquartersOptions.map((location, index) => (
-                  <Option key={index} value={location}>
-                    {location}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+              options={headquartersOptions.map(location => ({ label: location, value: location }))}
+              rules={[{ required: true, message: "Please select headquarters location" }]}
+            />
           </Col>
         </Row>
 
@@ -254,21 +227,12 @@ export const BrandForm: React.FC<BrandFormProps> = ({
           </Col>
 
           <Col xs={24} sm={12}>
-            <Form.Item
+            <FormSelect
               name="lastUpdate"
               label="Last Update Date"
-              rules={[
-                { required: true, message: "Please select last update date" },
-              ]}
-            >
-              <Select placeholder="Select last update date">
-                {lastUpdateOptions.map((date, index) => (
-                  <Option key={index} value={date}>
-                    {date}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+              options={lastUpdateOptions.map(date => ({ label: date, value: date }))}
+              rules={[{ required: true, message: "Please select last update date" }]}
+            />
           </Col>
         </Row>
 
@@ -296,22 +260,13 @@ export const BrandForm: React.FC<BrandFormProps> = ({
               {fields.map(({ key, name, ...restField }) => (
                 <Row key={key} gutter={8} align="middle">
                   <Col flex="1">
-                    <Form.Item
+                    <FormSelect
                       {...restField}
                       name={name}
-                      rules={[
-                        { required: true, message: "Please select a feature" },
-                      ]}
+                      options={featuresOptions.map(feature => ({ label: feature, value: feature }))}
+                      rules={[{ required: true, message: "Please select a feature" }]}
                       style={{ marginBottom: 8 }}
-                    >
-                      <Select placeholder="Select feature">
-                        {featuresOptions.map((feature, index) => (
-                          <Option key={index} value={feature}>
-                            {feature}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
+                    />
                   </Col>
                   <Col>
                     <MinusCircleOutlined
@@ -349,22 +304,13 @@ export const BrandForm: React.FC<BrandFormProps> = ({
               {fields.map(({ key, name, ...restField }) => (
                 <Row key={key} gutter={8} align="middle">
                   <Col flex="1">
-                    <Form.Item
+                    <FormSelect
                       {...restField}
                       name={name}
-                      rules={[
-                        { required: true, message: "Please select a variant" },
-                      ]}
+                      options={variantOptions.map(variant => ({ label: variant, value: variant }))}
+                      rules={[{ required: true, message: "Please select a variant" }]}
                       style={{ marginBottom: 8 }}
-                    >
-                      <Select placeholder="Select variant">
-                        {variantOptions.map((variant, index) => (
-                          <Option key={index} value={variant}>
-                            {variant}
-                          </Option>
-                        ))}
-                      </Select>
-                    </Form.Item>
+                    />
                   </Col>
                   <Col>
                     <MinusCircleOutlined

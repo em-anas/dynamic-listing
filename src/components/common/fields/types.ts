@@ -1,3 +1,5 @@
+import type { FormItemProps, SelectProps } from "antd";
+
 export type SearchInputProps = {
   value?: string;
   onChange: (value: string) => void;
@@ -17,3 +19,17 @@ export type SortControlsProps = {
   className?: string;
   width?: number | string;
 };
+
+export interface FormSelectProps extends Omit<FormItemProps, "children"> {
+  options: Array<{
+    label: string;
+    value: string | number;
+    disabled?: boolean;
+  }>;
+  selectProps?: SelectProps;
+  placeholder?: string;
+  showSearch?: boolean;
+  allowClear?: boolean;
+  disabled?: boolean;
+  notFoundContent?: React.ReactNode;
+}
