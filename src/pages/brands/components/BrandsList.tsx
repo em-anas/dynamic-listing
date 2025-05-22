@@ -5,14 +5,14 @@ import { PlusOutlined } from "@ant-design/icons";
 import { BrandItem } from "./BrandItem";
 import { BrandDetailModal } from "./BrandDetailModal";
 import { BrandForm } from "./BrandForm";
-import { useBrands } from "../../hooks/useBrands";
-import { useDebounce } from "../../hooks/useDebounce";
-import VirtualizedList from "../VirtualizedList";
-import type { Brand } from "../../types";
+import { useBrands } from "../../../hooks/useBrands";
+import { useDebounce } from "../../../hooks/useDebounce";
+import VirtualizedList from "../../../components/VirtualizedList";
+import type { Brand } from "../../../types";
 import {
   updateBrandDeviceCounts,
   removeBrand as removeBrandService,
-} from "../../services/brandService";
+} from "../../../services/brandService";
 
 const { Search } = Input;
 const { Option } = Select;

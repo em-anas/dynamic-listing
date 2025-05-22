@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Typography, Descriptions, Tag, List, Divider } from "antd";
-import type { BrandDetailModalProps } from "../../types";
+import type { BrandDetailModalProps } from "../../../types";
 
 const { Title, Paragraph } = Typography;
 

@@ -10,13 +10,13 @@ import {
   Row,
   Col,
 } from "antd";
-import type { MobileFormProps } from "../../types";
-import { getRandomItem } from "../../utils";
+import type { MobileFormProps } from "../../../types";
+import { getRandomItem } from "../../../utils";
 import {
   mobileImages,
   mobileMockData,
   deviceNames,
-} from "../../utils/mockData";
+} from "../../../utils/mockData";
 
 const { Option } = Select;
 

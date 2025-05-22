@@ -10,9 +10,9 @@ import {
   message,
 } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import type { BrandFormProps } from "../../types";
-import { brandLogos } from "../../utils/mockData";
-import { useBrands } from "../../hooks/useBrands";
+import type { BrandFormProps } from "../../../types";
+import { useBrands } from "../../../hooks";
+import { brandLogos } from "../../../utils";
 
 const { Option } = Select;
 

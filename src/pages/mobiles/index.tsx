@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "antd";
-import { MobilesList } from "../components";
+import { MobilesList } from "./components";
 import { useParams } from "react-router-dom";
 
 const { Title } = Typography;

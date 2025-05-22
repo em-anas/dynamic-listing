@@ -12,16 +12,13 @@ import {
   Tag,
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
-import VirtualizedList from "../VirtualizedList";
+import VirtualizedList from "../../../components/VirtualizedList";
 import { MobileItem } from "./MobileItem";
 import { MobileDetailModal } from "./MobileDetailModal";
 import { MobileForm } from "./MobileForm";
-import { useMobiles } from "../../hooks/useMobiles";
-import { useBrands } from "../../hooks/useBrands";
-import { useDebounce } from "../../hooks/useDebounce";
-import { useFocus } from "../../hooks/useFocus";
-import { updateBrandDeviceCounts } from "../../services/brandService";
-import type { Mobile } from "../../types";
+import { useMobiles, useBrands, useDebounce, useFocus } from "../../../hooks";
+import { updateBrandDeviceCounts } from "../../../services/brandService";
+import type { Mobile } from "../../../types";
 
 const { Search } = Input;
 const { Option } = Select;
@@ -291,15 +288,6 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
                   >
                     {availableBrands.map((brand) => (
                       <Option key={brand.id} value={brand.id}>
-                        <img
-                          src={brand.logo}
-                          alt={brand.name}
-                          style={{
-                            width: "16px",
-                            height: "16px",
-                            marginRight: "8px",
-                          }}
-                        />
                         {brand.name} ({brand.deviceCount})
                       </Option>
                     ))}
@@ -360,7 +348,7 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
           mobile={selectedMobile}
           brandName={getBrandName(selectedMobile.brandId)}
           onClose={handleCloseDetailModal}
-          onUpdate={(updates) => {
+          onUpdate={(updates: any) => {
             handleUpdateMobile(selectedMobile.id, updates);
           }}
         />

@@ -4,16 +4,16 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import "./styles/index.css";
 import { ThemeProvider } from "styled-components";
+import { theme } from "./styles/theme";
+import { GlobalStyles } from "./styles/GlobalStyles";
 import { MainLayout } from "./components/Layouts";
-import { BrandsPage } from "./pages/BrandsPage";
-import { MobilesPage } from "./pages/MobilesPage";
-import { NotFoundPage } from "./pages/NotFoundPage";
+import { NotFoundPage, BrandsPage, MobilesPage } from "./pages";
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={{ mode: "light" }}>
+    <ThemeProvider theme={theme}>
+      <GlobalStyles />
       <Router>
         <Routes>
           <Route path="/" element={<MainLayout />}>

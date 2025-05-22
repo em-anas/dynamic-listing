@@ -1,21 +1,17 @@
 import React from "react";
-import { Layout } from "antd";
+
 import { Header } from "./Header";
 import { Outlet } from "react-router-dom";
-
-const { Content, Footer } = Layout;
+import { StyledContent, StyledFooter, StyledLayout } from "./styles";
 
 export const MainLayout: React.FC = () => {
   return (
-    <Layout className="main-layout">
+    <StyledLayout>
       <Header />
-      <Content className="main-content">
+      <StyledContent>
         <Outlet />
-      </Content>
-
-      <Footer style={{ textAlign: "center" }}>
-        Mobile Dashboard © {new Date().getFullYear()}
-      </Footer>
-    </Layout>
+      </StyledContent>
+      <StyledFooter>Mobile Dashboard © {new Date().getFullYear()}</StyledFooter>
+    </StyledLayout>
   );
 };

@@ -8,7 +8,7 @@ import {
   Rate,
   Divider,
 } from "antd";
-import type { MobileDetailModalProps } from "../../types";
+import type { MobileDetailModalProps } from "../../../types";
 
 const { Title, Paragraph, Text } = Typography;
 

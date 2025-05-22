@@ -12,7 +12,7 @@ import { FixedSizeList as List } from "react-window";
 import { Alert } from "antd";
 import { useDebounce } from "../hooks";
 import type { VirtualizedListProps } from "../types";
-import { LoadingSpinner } from "./LoadingSpinner";
+import { LoadingSpinner } from "./common";
 
 export interface VirtualizedListRef {
   scrollTo: (index: number) => void;
