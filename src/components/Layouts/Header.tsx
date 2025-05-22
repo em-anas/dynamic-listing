@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Title } from "../common";
 import { LogoContainer, StyledHeader, StyledLink, StyledMenu } from "./styles";
 
@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
     <StyledHeader>
       <LogoContainer>
         <StyledLink to="/">
-          <Title noMargin variant="h3" customColor="disabled">
+          <Title noMargin variant="h2">
             Mobile Dashboard
           </Title>
         </StyledLink>
@@ -23,17 +23,17 @@ export const Header: React.FC = () => {
           {
             key: "/",
             label: (
-              <Link to="/">
+              <StyledLink to="/">
                 <Title variant="h4">Brands</Title>
-              </Link>
+              </StyledLink>
             ),
           },
           {
             key: "/mobiles",
             label: (
-              <Link to="/mobiles">
+              <StyledLink to="/mobiles">
                 <Title variant="h4">Devices</Title>
-              </Link>
+              </StyledLink>
             ),
           },
         ]}

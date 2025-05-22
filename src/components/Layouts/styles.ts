@@ -19,11 +19,11 @@ export const StyledFooter = styled(AntFooter)`
 `;
 
 export const StyledHeader = styled(AntHeader)`
-  background-color: var(--color-text-secondary);
+  background-color: var(--color-text-disabled);
   padding: var(--spacing-md) var(--spacing-lg);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   height: auto;
   line-height: 1.5;
   box-shadow: var(--shadow-md);
@@ -72,12 +72,10 @@ export const StyledMenu = styled(Menu)`
   justify-content: flex-end;
   background-color: var(--color-transparent);
 
-  
-
   @media (max-width: var(--breakpoint-sm)) {
     width: 100%;
     justify-content: center;
-    
+
     .ant-menu-item {
       margin: 0 var(--spacing-xs);
     }
