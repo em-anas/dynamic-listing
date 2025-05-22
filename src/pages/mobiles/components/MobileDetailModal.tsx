@@ -1,16 +1,20 @@
 import React from "react";
-import {
-  Modal,
-  Typography,
-  Descriptions,
-  Progress,
-  Card,
-  Rate,
-  Divider,
-} from "antd";
+import { Modal, Descriptions, Progress, Rate, Divider } from "antd";
 import type { MobileDetailModalProps } from "../../../types";
-
-const { Title, Paragraph, Text } = Typography;
+import {
+  MobileDetailHeader,
+  MobileDetailImage,
+  MobileDetailContent,
+  MobileSpecs,
+  SpecItem,
+  SpecLabel,
+  SpecValue,
+  PerformanceSection,
+  ReviewSection,
+  ReviewStats,
+  ReviewSummary,
+} from "./styles";
+import { Text, Title } from "../../../components";
 
 export const MobileDetailModal: React.FC<MobileDetailModalProps> = ({
   visible,
@@ -22,24 +26,20 @@ export const MobileDetailModal: React.FC<MobileDetailModalProps> = ({
   return (
     <Modal
       title={
-        <div className="mobile-detail-header">
-          <img
-            src={mobile.image}
-            alt={mobile.name}
-            className="mobile-detail-image"
-          />
+        <MobileDetailHeader>
+          <MobileDetailImage src={mobile.image} alt={mobile.name} />
           <div>
-            <Title level={3}>{mobile.name}</Title>
-            <Text type="secondary">{brandName}</Text>
+            <Title variant="h3">{mobile.name}</Title>
+            <Text variant="caption">{brandName}</Text>
           </div>
-        </div>
+        </MobileDetailHeader>
       }
       open={visible}
       onCancel={onClose}
       footer={null}
       width={800}
     >
-      <div className="mobile-detail-content">
+      <MobileDetailContent>
         <Descriptions
           title="Device Information"
           bordered
@@ -54,31 +54,37 @@ export const MobileDetailModal: React.FC<MobileDetailModalProps> = ({
         </Descriptions>
 
         <Divider orientation="left">Specifications</Divider>
-        <Descriptions bordered column={2} size="small">
-          <Descriptions.Item label="Display">
-            {mobile.specifications.display}
-          </Descriptions.Item>
-          <Descriptions.Item label="Processor">
-            {mobile.specifications.processor}
-          </Descriptions.Item>
-          <Descriptions.Item label="RAM">
-            {mobile.specifications.ram}
-          </Descriptions.Item>
-          <Descriptions.Item label="Storage">
-            {mobile.specifications.storage}
-          </Descriptions.Item>
-          <Descriptions.Item label="Camera">
-            {mobile.specifications.camera}
-          </Descriptions.Item>
-          <Descriptions.Item label="Battery">
-            {mobile.specifications.battery}
-          </Descriptions.Item>
-        </Descriptions>
+        <MobileSpecs>
+          <SpecItem>
+            <SpecLabel>Display</SpecLabel>
+            <SpecValue>{mobile.specifications.display}</SpecValue>
+          </SpecItem>
+          <SpecItem>
+            <SpecLabel>Processor</SpecLabel>
+            <SpecValue>{mobile.specifications.processor}</SpecValue>
+          </SpecItem>
+          <SpecItem>
+            <SpecLabel>RAM</SpecLabel>
+            <SpecValue>{mobile.specifications.ram}</SpecValue>
+          </SpecItem>
+          <SpecItem>
+            <SpecLabel>Storage</SpecLabel>
+            <SpecValue>{mobile.specifications.storage}</SpecValue>
+          </SpecItem>
+          <SpecItem>
+            <SpecLabel>Camera</SpecLabel>
+            <SpecValue>{mobile.specifications.camera}</SpecValue>
+          </SpecItem>
+          <SpecItem>
+            <SpecLabel>Battery</SpecLabel>
+            <SpecValue>{mobile.specifications.battery}</SpecValue>
+          </SpecItem>
+        </MobileSpecs>
 
         <Divider orientation="left">Performance Benchmark</Divider>
-        <Card bordered={false} className="benchmark-card">
-          <div className="benchmark-item">
-            <Text>AnTuTu</Text>
+        <PerformanceSection>
+          <SpecItem>
+            <SpecLabel>AnTuTu</SpecLabel>
             <Progress
               percent={Math.min(
                 100,
@@ -87,12 +93,12 @@ export const MobileDetailModal: React.FC<MobileDetailModalProps> = ({
               showInfo={false}
               status="active"
             />
-            <Text strong>
+            <SpecValue>
               {mobile.performanceBenchmark.antutu.toLocaleString()}
-            </Text>
-          </div>
-          <div className="benchmark-item">
-            <Text>Geekbench (Single)</Text>
+            </SpecValue>
+          </SpecItem>
+          <SpecItem>
+            <SpecLabel>Geekbench (Single)</SpecLabel>
             <Progress
               percent={Math.min(
                 100,
@@ -101,10 +107,12 @@ export const MobileDetailModal: React.FC<MobileDetailModalProps> = ({
               showInfo={false}
               status="active"
             />
-            <Text strong>{mobile.performanceBenchmark.geekbench.single}</Text>
-          </div>
-          <div className="benchmark-item">
-            <Text>Geekbench (Multi)</Text>
+            <SpecValue>
+              {mobile.performanceBenchmark.geekbench.single}
+            </SpecValue>
+          </SpecItem>
+          <SpecItem>
+            <SpecLabel>Geekbench (Multi)</SpecLabel>
             <Progress
               percent={Math.min(
                 100,
@@ -113,24 +121,22 @@ export const MobileDetailModal: React.FC<MobileDetailModalProps> = ({
               showInfo={false}
               status="active"
             />
-            <Text strong>{mobile.performanceBenchmark.geekbench.multi}</Text>
-          </div>
-        </Card>
+            <SpecValue>{mobile.performanceBenchmark.geekbench.multi}</SpecValue>
+          </SpecItem>
+        </PerformanceSection>
 
         <Divider orientation="left">Reviews</Divider>
-        <div className="reviews-container">
-          <div className="review-rating">
-            <Text strong style={{ fontSize: "24px" }}>
-              {mobile.reviews.rating.toFixed(1)}
-            </Text>
+        <ReviewSection>
+          <ReviewStats>
+            <Text>{mobile.reviews.rating.toFixed(1)}</Text>
             <Rate disabled value={mobile.reviews.rating} allowHalf />
-            <Text type="secondary">
+            <Text variant="caption">
               Based on {mobile.reviews.count} reviews
             </Text>
-          </div>
-          <Paragraph>{mobile.reviews.summary}</Paragraph>
-        </div>
-      </div>
+          </ReviewStats>
+          <ReviewSummary>{mobile.reviews.summary}</ReviewSummary>
+        </ReviewSection>
+      </MobileDetailContent>
     </Modal>
   );
 };

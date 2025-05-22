@@ -6,10 +6,15 @@ import VirtualizedList from "../../../components/VirtualizedList";
 import { MobileItem } from "./MobileItem";
 import { MobileDetailModal } from "./MobileDetailModal";
 import { MobileForm } from "./MobileForm";
-import { useMobiles, useBrands, useDebounce, useFocus } from "../../../hooks";
+import { useMobiles, useBrands, useFocus } from "../../../hooks";
 import { updateBrandDeviceCounts } from "../../../services/brandService";
 import type { Mobile } from "../../../types";
 import { Button, SearchInput } from "../../../components";
+import {
+  MobilesListContainer,
+  ListContentWrapper,
+  MobilesListContent,
+} from "./styles";
 
 const { Option } = Select;
 
@@ -58,8 +63,6 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
   }, [refreshMobiles, refreshBrands]);
 
   useFocus(handlePageFocus);
-
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const selectedBrandName = useMemo(() => {
     if (selectedBrandId) {
@@ -227,14 +230,13 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
   );
 
   return (
-    <div className="mobiles-list-container">
-      <div className="list-content-wrapper">
+    <MobilesListContainer>
+      <ListContentWrapper>
         <Row
           gutter={[16, 16]}
           justify="space-between"
           align="middle"
           className="mobiles-list-header"
-          style={{ marginBottom: 24 }}
         >
           <Col xs={24} sm={24} md={16} lg={18} xl={18}>
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
@@ -253,7 +255,7 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
                   <SearchInput
                     placeholder="Search devices"
                     value={searchTerm}
-                    onChange={(value) => handleSearch(value)}
+                    onChange={(val) => handleSearch(val)}
                     allowClear
                   />
                 </Col>
@@ -267,17 +269,17 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
                     <Option value="desc">Name (Z-A)</Option>
                   </Select>
                 </Col>
-                <Col xs={24} sm={12} md={8} lg={6}>
+                <Col xs={24} sm={12} md={6} lg={4}>
                   <Select
-                    placeholder="Filter by brand"
-                    value={selectedBrandId || undefined}
+                    value={selectedBrandId || ""}
                     onChange={handleBrandFilterChange}
                     style={{ width: "100%" }}
                     allowClear
+                    placeholder="Filter by brand"
                   >
                     {availableBrands.map((brand) => (
                       <Option key={brand.id} value={brand.id}>
-                        {brand.name} ({brand.deviceCount})
+                        {brand.name}
                       </Option>
                     ))}
                   </Select>
@@ -299,10 +301,7 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
         </Row>
 
         {mobiles.length > 0 ? (
-          <div
-            className="mobiles-list"
-            style={{ height: "calc(100vh - 200px)" }}
-          >
+          <MobilesListContent>
             <VirtualizedList
               items={mobiles}
               totalCount={totalCount}
@@ -312,24 +311,12 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
               hasNextPage={hasNextPage}
               isNextPageLoading={isLoading}
               keyExtractor={keyExtractor}
-              height={Math.max(400, window.innerHeight - 280)}
             />
-          </div>
+          </MobilesListContent>
         ) : (
-          <Empty
-            description={
-              <span>
-                {debouncedSearchTerm
-                  ? `No devices matching "${debouncedSearchTerm}"`
-                  : selectedBrandId
-                  ? `No devices for ${selectedBrandName}`
-                  : "No devices available"}
-              </span>
-            }
-            style={{ marginTop: 48 }}
-          />
+          <Empty description="No devices found" />
         )}
-      </div>
+      </ListContentWrapper>
 
       {selectedMobile && (
         <MobileDetailModal
@@ -337,30 +324,26 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
           mobile={selectedMobile}
           brandName={getBrandName(selectedMobile.brandId)}
           onClose={handleCloseDetailModal}
-          onUpdate={(updates: any) => {
-            handleUpdateMobile(selectedMobile.id, updates);
-          }}
+          onUpdate={(updates) => handleUpdateMobile(selectedMobile.id, updates)}
         />
       )}
 
       <MobileForm
         visible={isAddModalVisible}
-        brands={brands}
         onCancel={handleCancelCreate}
         onSubmit={handleCreateMobile}
-        initialBrandId={selectedBrandId || undefined}
+        brands={brands}
       />
 
       {editingMobile && (
         <MobileForm
           visible={isEditModalVisible}
-          mobile={editingMobile}
-          brands={brands}
           onCancel={handleCloseEditModal}
           onSubmit={handleEditMobileModal}
-          initialBrandId={editingMobile.brandId}
+          mobile={editingMobile}
+          brands={brands}
         />
       )}
-    </div>
+    </MobilesListContainer>
   );
 };

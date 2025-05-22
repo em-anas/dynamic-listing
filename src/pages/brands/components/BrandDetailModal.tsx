@@ -1,6 +1,12 @@
 import React from "react";
 import { Modal, Typography, Descriptions, Tag, List, Divider } from "antd";
 import type { BrandDetailModalProps } from "../../../types";
+import {
+  BrandDetailHeader,
+  BrandDetailLogo,
+  BrandDetailContent,
+  BrandVariants,
+} from "./styles";
 
 const { Title, Paragraph } = Typography;
 
@@ -12,21 +18,17 @@ export const BrandDetailModal: React.FC<BrandDetailModalProps> = ({
   return (
     <Modal
       title={
-        <div className="brand-detail-header">
-          <img
-            src={brand.logo}
-            alt={brand.name}
-            className="brand-detail-logo"
-          />
+        <BrandDetailHeader>
+          <BrandDetailLogo src={brand.logo} alt={brand.name} />
           <Title level={3}>{brand.name}</Title>
-        </div>
+        </BrandDetailHeader>
       }
       open={visible}
       onCancel={onClose}
       footer={null}
       width={800}
     >
-      <div className="brand-detail-content">
+      <BrandDetailContent>
         <Descriptions
           title="Company Information"
           bordered
@@ -61,17 +63,17 @@ export const BrandDetailModal: React.FC<BrandDetailModalProps> = ({
         />
 
         <Divider orientation="left">Variants</Divider>
-        <div className="brand-variants">
+        <BrandVariants>
           {brand.variants.map((variant) => (
-            <Tag key={variant} color="blue" style={{ margin: "4px" }}>
+            <Tag key={variant} color="blue">
               {variant}
             </Tag>
           ))}
-        </div>
+        </BrandVariants>
 
         <Divider />
         <Paragraph>{brand.description}</Paragraph>
-      </div>
+      </BrandDetailContent>
     </Modal>
   );
 };

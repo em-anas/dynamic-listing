@@ -6,7 +6,6 @@ import { BrandItem } from "./BrandItem";
 import { BrandDetailModal } from "./BrandDetailModal";
 import { BrandForm } from "./BrandForm";
 import { useBrands } from "../../../hooks/useBrands";
-import { useDebounce } from "../../../hooks/useDebounce";
 import VirtualizedList from "../../../components/VirtualizedList";
 import type { Brand } from "../../../types";
 import {
@@ -14,6 +13,11 @@ import {
   removeBrand as removeBrandService,
 } from "../../../services/brandService";
 import { Button, SearchInput } from "../../../components";
+import {
+  BrandsListContainer,
+  ListContentWrapper,
+  BrandsListContent,
+} from "./styles";
 
 const { Option } = Select;
 
@@ -45,7 +49,6 @@ export const BrandsList: React.FC = () => {
     updateBrandDeviceCounts();
   }, []);
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const handleSearch = useCallback(
     (value: string) => {
@@ -189,14 +192,13 @@ export const BrandsList: React.FC = () => {
   );
 
   return (
-    <div className="brands-list-container">
-      <div className="list-content-wrapper">
+    <BrandsListContainer>
+      <ListContentWrapper>
         <Row
           gutter={[16, 16]}
           justify="space-between"
           align="middle"
           className="brands-list-header"
-          style={{ marginBottom: 24 }}
         >
           <Col xs={24} sm={24} md={16} lg={18} xl={18}>
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
@@ -236,10 +238,7 @@ export const BrandsList: React.FC = () => {
         </Row>
 
         {brands.length > 0 ? (
-          <div
-            className="brands-list"
-            style={{ height: "calc(100vh - 200px)" }}
-          >
+          <BrandsListContent>
             <VirtualizedList
               items={brands}
               totalCount={totalCount}
@@ -249,31 +248,19 @@ export const BrandsList: React.FC = () => {
               hasNextPage={hasNextPage}
               isNextPageLoading={isLoading}
               keyExtractor={keyExtractor}
-              height={Math.max(400, window.innerHeight - 280)}
             />
-          </div>
+          </BrandsListContent>
         ) : (
-          <Empty
-            description={
-              <span>
-                {debouncedSearchTerm
-                  ? `No brands matching "${debouncedSearchTerm}"`
-                  : "No brands available"}
-              </span>
-            }
-            style={{ marginTop: 48 }}
-          />
+          <Empty description="No brands found" />
         )}
-      </div>
+      </ListContentWrapper>
 
       {selectedBrand && (
         <BrandDetailModal
           visible={isDetailModalVisible}
           brand={selectedBrand}
           onClose={handleCloseDetailModal}
-          onUpdate={(updates) => {
-            handleUpdateBrand(selectedBrand.id, updates);
-          }}
+          onUpdate={(updates) => handleUpdateBrand(selectedBrand.id, updates)}
         />
       )}
 
@@ -286,11 +273,11 @@ export const BrandsList: React.FC = () => {
       {editingBrand && (
         <BrandForm
           visible={isEditModalVisible}
-          brand={editingBrand}
           onCancel={handleCloseEditModal}
           onSubmit={handleEditBrandModal}
+          brand={editingBrand}
         />
       )}
-    </div>
+    </BrandsListContainer>
   );
 };

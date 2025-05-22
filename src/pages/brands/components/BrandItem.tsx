@@ -1,14 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import {
-  Card,
-  Button,
-  Typography,
-  Input,
-  Form,
-  Popconfirm,
-  Tooltip,
-} from "antd";
+import { Input, Form, Popconfirm, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import {
   EditOutlined,
@@ -18,8 +10,21 @@ import {
   MobileOutlined,
   FormOutlined,
 } from "@ant-design/icons";
-
-const { Title, Paragraph } = Typography;
+import {
+  BrandItemContainer,
+  BrandItemCard,
+  BrandItemForm,
+  BrandItemContent,
+  BrandHeader,
+  BrandLogo,
+  BrandTitleContainer,
+  BrandTitle,
+  BrandDescription,
+  BrandStats,
+  StatItem,
+  ButtonText,
+} from "./styles";
+import { Button } from "../../../components";
 
 interface BrandItemProps {
   brand: {
@@ -83,10 +88,16 @@ export const BrandItem: React.FC<BrandItemProps> = ({
   const actionButtons = isInlineEditing
     ? [
         <Tooltip key="save" title="Save Changes">
-          <Button icon={<SaveOutlined />} onClick={handleSave} size="small" />
+          <Button
+            variant="outline"
+            icon={<SaveOutlined />}
+            onClick={handleSave}
+            size="small"
+          />
         </Tooltip>,
         <Tooltip key="cancel" title="Cancel">
           <Button
+            variant="outline"
             icon={<CloseOutlined />}
             onClick={handleCancel}
             size="small"
@@ -96,6 +107,7 @@ export const BrandItem: React.FC<BrandItemProps> = ({
     : [
         <Tooltip key="inline-edit" title="Quick Edit">
           <Button
+            variant="outline"
             icon={<EditOutlined />}
             onClick={handleInlineEditClick}
             size="small"
@@ -103,6 +115,7 @@ export const BrandItem: React.FC<BrandItemProps> = ({
         </Tooltip>,
         <Tooltip key="modal-edit" title="Full Edit">
           <Button
+            variant="outline"
             icon={<FormOutlined />}
             onClick={handleModalEditClick}
             size="small"
@@ -121,6 +134,7 @@ export const BrandItem: React.FC<BrandItemProps> = ({
         >
           <Tooltip title="Delete Brand">
             <Button
+              variant="outline"
               icon={<DeleteOutlined />}
               danger
               onClick={(e) => e.stopPropagation()}
@@ -134,37 +148,26 @@ export const BrandItem: React.FC<BrandItemProps> = ({
           onClick={(e) => e.stopPropagation()}
         >
           <Tooltip title="View Devices">
-            <Button icon={<MobileOutlined />} size="small">
-              <span className="button-text">Devices</span>
+            <Button variant="outline" icon={<MobileOutlined />} size="small">
+              <ButtonText>Devices</ButtonText>
             </Button>
           </Tooltip>
         </Link>,
       ];
 
   return (
-    <div
-      style={{
-        ...style,
-        width: "100%",
-        maxWidth: "100%",
-        boxSizing: "border-box",
-      }}
-      className="brand-item-container"
-    >
-      <Card
+    <BrandItemContainer style={style}>
+      <BrandItemCard
         hoverable={!isInlineEditing}
         onClick={isInlineEditing ? undefined : () => onShowDetails(brand)}
         actions={actionButtons}
-        className="brand-item-card"
-        bodyStyle={{ padding: "16px", width: "100%", boxSizing: "border-box" }}
-        style={{ width: "100%", maxWidth: "100%", margin: 0 }}
+        bodyStyle={{ padding: "16px" }}
       >
         {isInlineEditing ? (
-          <Form
+          <BrandItemForm
             form={form}
             layout="vertical"
             onClick={(e) => e.stopPropagation()}
-            style={{ width: "100%" }}
           >
             <Form.Item
               name="name"
@@ -185,102 +188,27 @@ export const BrandItem: React.FC<BrandItemProps> = ({
                 maxLength={200}
               />
             </Form.Item>
-          </Form>
+          </BrandItemForm>
         ) : (
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <div
-              className="brand-header"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "12px",
-                width: "100%",
-                minHeight: "48px",
-              }}
-            >
-              <img
-                src={brand.logo}
-                alt={brand.name}
-                className="brand-logo"
-                style={{
-                  width: "48px",
-                  height: "48px",
-                  objectFit: "cover",
-                  borderRadius: "8px",
-                  marginRight: "12px",
-                  flexShrink: 0,
-                }}
-              />
-              <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>
-                <Title
-                  level={4}
-                  style={{
-                    margin: 0,
-                    fontSize: "16px",
-                    lineHeight: "1.4",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {brand.name}
-                </Title>
-              </div>
-            </div>
+          <BrandItemContent>
+            <BrandHeader>
+              <BrandLogo src={brand.logo} alt={brand.name} />
+              <BrandTitleContainer>
+                <BrandTitle level={4}>{brand.name}</BrandTitle>
+              </BrandTitleContainer>
+            </BrandHeader>
 
-            <div style={{ flex: 1, marginBottom: "12px" }}>
-              <Paragraph
-                style={{
-                  margin: 0,
-                  fontSize: "14px",
-                  color: "#666",
-                  lineHeight: "1.4",
-                  overflow: "hidden",
-                  display: "-webkit-box",
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical",
-                  textOverflow: "ellipsis",
-                  height: "63px",
-                }}
-              >
-                {brand.description}
-              </Paragraph>
-            </div>
+            <BrandDescription>{brand.description}</BrandDescription>
 
-            <div
-              className="brand-footer"
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                paddingTop: "12px",
-                borderTop: "1px solid #f0f0f0",
-                width: "100%",
-                minHeight: "32px",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <span style={{ fontSize: "14px", fontWeight: 500 }}>
-                  Devices:{" "}
-                  <span className="device-count">{brand.deviceCount}</span>
-                </span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <span className="founded-year">
-                  Founded: {brand.foundedYear}
-                </span>
-              </div>
-            </div>
-          </div>
+            <BrandStats>
+              <StatItem>
+                <MobileOutlined /> {brand.deviceCount} Devices
+              </StatItem>
+              <StatItem>{brand.softwareSupport.years} Years Support</StatItem>
+            </BrandStats>
+          </BrandItemContent>
         )}
-      </Card>
-    </div>
+      </BrandItemCard>
+    </BrandItemContainer>
   );
 };

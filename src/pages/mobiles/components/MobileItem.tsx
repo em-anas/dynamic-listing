@@ -1,17 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-import {
-  Card,
-  Button,
-  Typography,
-  Input,
-  Form,
-  Popconfirm,
-  Rate,
-  Tag,
-  Tooltip,
-  InputNumber,
-} from "antd";
+import { Input, Form, Popconfirm, Rate, Tooltip, InputNumber } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -20,8 +9,20 @@ import {
   DollarOutlined,
   FormOutlined,
 } from "@ant-design/icons";
-
-const { Title, Paragraph, Text } = Typography;
+import {
+  MobileItemContainer,
+  MobileItemCard,
+  MobileItemForm,
+  MobileItemContent,
+  MobileHeader,
+  MobileImage,
+  MobileTitleContainer,
+  MobileTitle,
+  MobileDescription,
+  MobileStats,
+  StatItem,
+} from "./styles";
+import { Button, Text } from "../../../components";
 
 interface MobileItemProps {
   mobile: {
@@ -105,10 +106,16 @@ export const MobileItem: React.FC<MobileItemProps> = ({
   const actionButtons = isInlineEditing
     ? [
         <Tooltip key="save" title="Save Changes">
-          <Button icon={<SaveOutlined />} onClick={handleSave} size="small" />
+          <Button
+            variant="outline"
+            icon={<SaveOutlined />}
+            onClick={handleSave}
+            size="small"
+          />
         </Tooltip>,
         <Tooltip key="cancel" title="Cancel">
           <Button
+            variant="outline"
             icon={<CloseOutlined />}
             onClick={handleCancel}
             size="small"
@@ -118,6 +125,7 @@ export const MobileItem: React.FC<MobileItemProps> = ({
     : [
         <Tooltip key="inline-edit" title="Quick Edit">
           <Button
+            variant="outline"
             icon={<EditOutlined />}
             onClick={handleInlineEditClick}
             size="small"
@@ -125,6 +133,7 @@ export const MobileItem: React.FC<MobileItemProps> = ({
         </Tooltip>,
         <Tooltip key="modal-edit" title="Full Edit">
           <Button
+            variant="outline"
             icon={<FormOutlined />}
             onClick={handleModalEditClick}
             size="small"
@@ -142,6 +151,7 @@ export const MobileItem: React.FC<MobileItemProps> = ({
         >
           <Tooltip title="Delete Device">
             <Button
+              variant="outline"
               icon={<DeleteOutlined />}
               danger
               onClick={(e) => e.stopPropagation()}
@@ -152,29 +162,18 @@ export const MobileItem: React.FC<MobileItemProps> = ({
       ];
 
   return (
-    <div
-      style={{
-        ...style,
-        width: "100%",
-        maxWidth: "100%",
-        boxSizing: "border-box",
-      }}
-      className="mobile-item-container"
-    >
-      <Card
+    <MobileItemContainer style={style}>
+      <MobileItemCard
         hoverable={!isInlineEditing}
-        className="mobile-item-card"
         onClick={isInlineEditing ? undefined : () => onShowDetails(mobile)}
         actions={actionButtons}
-        bodyStyle={{ padding: "16px", width: "100%", boxSizing: "border-box" }}
-        style={{ width: "100%", maxWidth: "100%", margin: 0 }}
+        bodyStyle={{ padding: "16px" }}
       >
         {isInlineEditing ? (
-          <Form
+          <MobileItemForm
             form={form}
             layout="vertical"
             onClick={(e) => e.stopPropagation()}
-            style={{ width: "100%" }}
           >
             <Form.Item
               name="name"
@@ -201,144 +200,31 @@ export const MobileItem: React.FC<MobileItemProps> = ({
                 }
               />
             </Form.Item>
-          </Form>
+          </MobileItemForm>
         ) : (
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <div
-              className="mobile-header"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: "12px",
-                width: "100%",
-                minHeight: "60px",
-              }}
-            >
-              <img
-                src={mobile.image}
-                alt={mobile.name}
-                className="mobile-image"
-                style={{
-                  width: "60px",
-                  height: "60px",
-                  objectFit: "cover",
-                  borderRadius: "8px",
-                  marginRight: "12px",
-                  flexShrink: 0,
-                }}
-              />
-              <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>
-                <Title
-                  level={4}
-                  style={{
-                    margin: "0 0 4px 0",
-                    fontSize: "16px",
-                    lineHeight: "1.4",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {mobile.name}
-                </Title>
-                <Tag
-                  color="blue"
-                  style={{ fontSize: "12px", marginTop: "4px" }}
-                >
-                  {brandName}
-                </Tag>
-              </div>
-            </div>
+          <MobileItemContent>
+            <MobileHeader>
+              <MobileImage src={mobile.image} alt={mobile.name} />
+              <MobileTitleContainer>
+                <MobileTitle level={4}>{mobile.name}</MobileTitle>
+                <Text variant="body">{brandName}</Text>
+              </MobileTitleContainer>
+            </MobileHeader>
 
-            <div style={{ flex: 1, marginBottom: "12px" }}>
-              <Paragraph
-                style={{
-                  margin: 0,
-                  fontSize: "13px",
-                  color: "#666",
-                  lineHeight: "1.4",
-                  overflow: "hidden",
-                  display: "-webkit-box",
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical",
-                  textOverflow: "ellipsis",
-                  height: "36px",
-                }}
-              >
-                {formatSpecifications()}
-              </Paragraph>
-            </div>
+            <MobileDescription>{formatSpecifications()}</MobileDescription>
 
-            <div
-              className="mobile-footer"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-                paddingTop: "12px",
-                borderTop: "1px solid #f0f0f0",
-                width: "100%",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  className="mobile-price"
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    color: "#1890ff",
-                  }}
-                >
-                  ${mobile.price.toFixed(2)}
-                </Text>
-                <Text type="secondary" style={{ fontSize: "12px" }}>
-                  {mobile.releaseDate}
-                </Text>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  className="mobile-rating"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                  }}
-                >
-                  <Rate
-                    disabled
-                    defaultValue={mobile.reviews.rating}
-                    allowHalf
-                    style={{ fontSize: "14px" }}
-                  />
-                  <Text type="secondary" style={{ fontSize: "12px" }}>
-                    ({mobile.reviews.count})
-                  </Text>
-                </div>
-              </div>
-            </div>
-          </div>
+            <MobileStats>
+              <StatItem>
+                <DollarOutlined /> ${mobile.price}
+              </StatItem>
+              <StatItem>
+                <Rate disabled defaultValue={mobile.reviews.rating} />
+                <Text variant="body">({mobile.reviews.count})</Text>
+              </StatItem>
+            </MobileStats>
+          </MobileItemContent>
         )}
-      </Card>
-    </div>
+      </MobileItemCard>
+    </MobileItemContainer>
   );
 };

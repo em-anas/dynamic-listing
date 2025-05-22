@@ -1,18 +1,10 @@
 import React, { useMemo } from "react";
-import {
-  Modal,
-  Form,
-  InputNumber,
-  Button,
-  Select,
-  Row,
-  Col,
-  message,
-} from "antd";
+import { Modal, Form, InputNumber, Select, Row, Col, message } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import type { BrandFormProps } from "../../../types";
 import { useBrands } from "../../../hooks";
 import { brandLogos } from "../../../utils";
+import { Button } from "../../../components";
 
 const { Option } = Select;
 
@@ -293,7 +285,7 @@ export const BrandForm: React.FC<BrandFormProps> = ({
               >
                 <span style={{ fontWeight: 500 }}>What's New Features</span>
                 <Button
-                  type="dashed"
+                  variant="outline"
                   onClick={() => add()}
                   icon={<PlusOutlined />}
                   size="small"
@@ -346,7 +338,7 @@ export const BrandForm: React.FC<BrandFormProps> = ({
               >
                 <span style={{ fontWeight: 500 }}>Variants</span>
                 <Button
-                  type="dashed"
+                  variant="outline"
                   onClick={() => add()}
                   icon={<PlusOutlined />}
                   size="small"
