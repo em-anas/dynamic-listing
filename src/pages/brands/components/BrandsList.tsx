@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useCallback, useEffect } from "react";
-import { Empty, Input, Select, Button, Row, Col, Space, message } from "antd";
+import { Empty, Select, Row, Col, Space, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { BrandItem } from "./BrandItem";
 import { BrandDetailModal } from "./BrandDetailModal";
@@ -13,8 +13,8 @@ import {
   updateBrandDeviceCounts,
   removeBrand as removeBrandService,
 } from "../../../services/brandService";
+import { Button, SearchInput } from "../../../components";
 
-const { Search } = Input;
 const { Option } = Select;
 
 const ITEM_HEIGHT = 300;
@@ -202,12 +202,11 @@ export const BrandsList: React.FC = () => {
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
               <Row gutter={[8, 8]}>
                 <Col xs={24} sm={12} md={8} lg={6}>
-                  <Search
+                  <SearchInput
                     placeholder="Search brands"
                     value={searchTerm}
-                    onChange={(e) => handleSearch(e.target.value)}
+                    onChange={(val) => handleSearch(val)}
                     allowClear
-                    style={{ width: "100%" }}
                   />
                 </Col>
                 <Col xs={24} sm={12} md={6} lg={4}>
@@ -225,7 +224,7 @@ export const BrandsList: React.FC = () => {
           </Col>
           <Col xs={24} sm={24} md={8} lg={6} xl={6}>
             <Button
-              type="primary"
+              variant="primary"
               icon={<PlusOutlined />}
               onClick={handleAddBrand}
               style={{ width: "100%" }}

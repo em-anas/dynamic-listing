@@ -1,16 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useCallback, useEffect, useMemo } from "react";
-import {
-  Empty,
-  Input,
-  Select,
-  Button,
-  Row,
-  Col,
-  Space,
-  message,
-  Tag,
-} from "antd";
+import { Empty, Select, Row, Col, Space, message, Tag } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import VirtualizedList from "../../../components/VirtualizedList";
 import { MobileItem } from "./MobileItem";
@@ -19,8 +9,8 @@ import { MobileForm } from "./MobileForm";
 import { useMobiles, useBrands, useDebounce, useFocus } from "../../../hooks";
 import { updateBrandDeviceCounts } from "../../../services/brandService";
 import type { Mobile } from "../../../types";
+import { Button, SearchInput } from "../../../components";
 
-const { Search } = Input;
 const { Option } = Select;
 
 const ITEM_HEIGHT = 300;
@@ -260,12 +250,11 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
               )}
               <Row gutter={[8, 8]}>
                 <Col xs={24} sm={12} md={8} lg={6}>
-                  <Search
+                  <SearchInput
                     placeholder="Search devices"
                     value={searchTerm}
-                    onChange={(e) => handleSearch(e.target.value)}
+                    onChange={(value) => handleSearch(value)}
                     allowClear
-                    style={{ width: "100%" }}
                   />
                 </Col>
                 <Col xs={24} sm={12} md={6} lg={4}>
@@ -298,7 +287,7 @@ export const MobilesList: React.FC<MobilesListProps> = ({ initialBrandId }) => {
           </Col>
           <Col xs={24} sm={24} md={8} lg={6} xl={6}>
             <Button
-              type="primary"
+              variant="primary"
               icon={<PlusOutlined />}
               onClick={handleAddMobile}
               style={{ width: "100%" }}

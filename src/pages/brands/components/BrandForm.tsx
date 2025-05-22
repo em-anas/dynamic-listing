@@ -165,13 +165,6 @@ export const BrandForm: React.FC<BrandFormProps> = ({
           >
             {availableBrandNames.map((key) => (
               <Option key={key} value={key}>
-                <img
-                  src={brandLogos[key as keyof typeof brandLogos]}
-                  height={20}
-                  width={20}
-                  alt={key}
-                  style={{ marginRight: 8, verticalAlign: "middle" }}
-                />
                 {key}
               </Option>
             ))}

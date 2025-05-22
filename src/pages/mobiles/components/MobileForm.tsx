@@ -163,15 +163,6 @@ export const MobileForm: React.FC<MobileFormProps> = ({
               <Select placeholder="Select brand" onChange={handleBrandChange}>
                 {brands.map((brand) => (
                   <Option key={brand.id} value={brand.id}>
-                    <img
-                      src={brand.logo}
-                      alt={brand.name}
-                      style={{
-                        width: "20px",
-                        height: "20px",
-                        marginRight: "8px",
-                      }}
-                    />
                     {brand.name}
                   </Option>
                 ))}
